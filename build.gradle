@@ -34,11 +34,14 @@ buildscript {
 		classpath 'org.hibernate.build.gradle:version-injection-plugin:1.0.0'
 		classpath 'org.hibernate.build.gradle:gradle-xjc-plugin:1.0.2.Final'
 		classpath 'com.github.lburgazzoli:lb-karaf-features-gen:1.0.0-SNAPSHOT'
+		classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
 	}
 }
 
 allprojects {
-    repositories {
+	apply plugin: "io.spring.dependency-management"
+
+	repositories {
         mavenCentral()
         mavenLocal()
 
@@ -50,7 +53,19 @@ allprojects {
             name "jboss-snapshots"
             url "http://snapshots.jboss.org/maven2/"
         }
+		// TODO: remove this, some artefacts aren't available in above repos yet
+		maven {
+            name "EAP 7.1"
+			url "http://download-node-02.eng.bos.redhat.com/brewroot/repos/jb-eap-7.1-rhel-7-maven-build/latest/maven/"
+        }
     }
+
+	dependencyManagement {
+		applyMavenExclusions false
+		imports {
+			mavenBom 'org.jboss.eap:wildfly-component-matrix:7.1.4.GA-redhat-1'
+		}
+	}
 }
 
 ext {

@@ -67,12 +67,28 @@ task processPluginXml(type: Copy) {
 // and I'd rather not rely on it yet.
 def generateMavenDependency(String gradleDependency) {
     String[] split = gradleDependency.split(":")
+    String gid = split.length > 0 ? split[0] : null
+    String aid = split.length > 1 ? split[1] : null
+    String version = split.length > 2 ? split[2] : null
+    if (version == null) {
+        version = resolveDependencyVersion(gid, aid)
+        if (version == null) {
+            logger.log(LogLevel.ERROR, "Couldn't resolve dependency $gradleDependency")
+        } else {
+            println "  resolved dependency: $gid:$aid:$version"
+        }
+    }
     return    "\n<dependency>"\
-            + "\n  <groupId>" + split[0] + "</groupId>"\
-            + "\n  <artifactId>" + split[1] + "</artifactId>"\
-            + "\n  <version>" + split[2] + "</version>"\
+            + "\n  <groupId>" + gid + "</groupId>"\
+            + "\n  <artifactId>" + aid + "</artifactId>"\
+            + "\n  <version>" + version + "</version>"\
             + "\n  <type>jar</type>"\
             + "\n</dependency>"
+}
+
+def resolveDependencyVersion(String gid, String name) {
+    println("  resolving $gid:$name")
+    return dependencyManagement.managedVersions.get(gid + ":" + name)
 }
 
 // Writes pom.xml using merged Gradle dependency and MavenPom configuration.
