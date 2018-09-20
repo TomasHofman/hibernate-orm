@@ -7,19 +7,24 @@
 
 buildscript {
 	repositories {
-		flatDir{
+		/*flatDir {
 			dirs "$rootDir/libs"
-		}
+		}*/
+		mavenCentral()
 	}
 	dependencies {
 		classpath files("$rootDir/libs/wildfly-gradle-tools-0.0.9.jar")
+		classpath "org.wildfly.build:wildfly-server-provisioning:1.2.10.Final"
 	}
 }
 
-plugins {
-  id "org.wildfly.build.provision"   version '0.0.9'
-  id "org.wildfly.build.featurepack" version '0.0.9'
-}
+/*plugins {
+  id "org.wildfly.build.provision"   //version '0.0.9'
+  id "org.wildfly.build.featurepack" //version '0.0.9'
+}*/
+
+apply plugin: "org.wildfly.build.provision"
+apply plugin: "org.wildfly.build.featurepack"
 
 apply from: rootProject.file( 'gradle/base-information.gradle' )
 apply plugin: 'java'
