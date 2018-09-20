@@ -5,6 +5,17 @@
  * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
  */
 
+buildscript {
+	repositories {
+		flatDir{
+			dirs "$rootDir/libs"
+		}
+	}
+	dependencies {
+		classpath files("$rootDir/libs/wildfly-gradle-tools-0.0.9.jar")
+	}
+}
+
 plugins {
   id "org.wildfly.build.provision"   version '0.0.9'
   id "org.wildfly.build.featurepack" version '0.0.9'
