@@ -25,10 +25,10 @@ publishing {
 	}
 
 	repositories {
-		/*maven {
+		maven {
 			name 'jboss-snapshots-repository'
 			url 'https://repository.jboss.org/nexus/content/repositories/snapshots'
-		}*/
+		}
 	}
 }
 
